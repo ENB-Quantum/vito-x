@@ -55,8 +55,17 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+		  boxShadow: {
+			'primary-glow': '0 0 204px 0 hsl(var(--primary) / 0.5)', // Updated syntax
+			'secondary-glow': '0 0 200px 0 hsl(var(--primary) /0.2)'
+		},
+		backgroundImage: {
+			'radial-gradient': 'radial-gradient(at center, #F7D6BF, #FFFFFF);'
+		}
   	}
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+
+
