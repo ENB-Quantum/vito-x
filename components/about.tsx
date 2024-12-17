@@ -8,13 +8,13 @@ export default function About(){
             <div className="sm:w-96 sm:mr-10">
                 <h3 className="text-xs text-primary font-semibold">What we do</h3>
                 <h1 className="text-3xl font-semibold mt-4 mb-4 sm:w-64">Create your life's soundtrack</h1>
-                <p className="sm:font-semibold text-gray-700 mb-8 sm:text-lg text-md">Imagine creating personalized music for your life: 
+                <p className="sm:font-semibold text-gray-700 dark:text-white dark:font-normal mb-8 sm:text-lg text-md">Imagine creating personalized music for your life: 
                     a ballad for a romantic date, a banger for a night 
                     out with friends, a lo-fi track for meditation, or an 
                     upbeat song for your child’s birthday. If you can describe 
                     it in text, you can now express it in music.
                 </p>
-                <Button variant={"outline"} className="text-sm drop-shadow-md shadow-primary-glow"> Create your first song</Button>
+                <Button variant={"outline"} className="text-md"> Create your first song</Button>
             </div>
             <div className="my-10 sm:my-0">
                 <div className="flex justify-between bg-transparent gap-3 border rounded-md p-2 my-2 shadow-secondary-glow">
@@ -37,7 +37,7 @@ export default function About(){
                     </div>
                     <div className="flex items-center sm:gap-10 sm:mx-6 mx-2 gap-2">
                         <h1 className="hidden md:flex">4:21</h1>
-                        <div className="flex items-center justify-center w-12 h-12 border rounded-full bg-white">
+                        <div className="flex items-center justify-center w-12 h-12 border rounded-full bg-white dark:bg-gray-500/40">
                             <Play />
                         </div>
                     </div>
@@ -61,7 +61,7 @@ export default function About(){
                     </div>
                     <div className="flex items-center sm:gap-10 sm:mx-6 mx-2 gap-2">
                         <h1 className="hidden sm:flex">4:21</h1>
-                        <div className="flex items-center justify-center w-12 h-12 border rounded-full bg-white">
+                        <div className="flex items-center justify-center w-12 h-12 border rounded-full bg-white dark:bg-gray-500/40">
                             <Play />
                         </div>
                     </div>
@@ -86,7 +86,7 @@ export default function About(){
                     </div>
                     <div className="flex items-center sm:gap-10 sm:mx-6 mx-2 gap-2">
                         <h1 className="hidden sm:flex">4:21</h1>
-                        <div className="flex items-center justify-center w-12 h-12 border rounded-full bg-white">
+                        <div className="flex items-center justify-center w-12 h-12 border rounded-full bg-white dark:bg-gray-500/40">
                             <Play />
                         </div>
                     </div>
@@ -107,7 +107,7 @@ export default function About(){
                     </div>
                     <div className="flex items-center sm:gap-10 sm:mx-6 mx-2 gap-2">
                         <h1 className="hidden sm:flex">4:21</h1>
-                        <div className="flex items-center justify-center w-12 h-12 border rounded-full bg-white">
+                        <div className="flex items-center justify-center w-12 h-12 border rounded-full bg-white dark:bg-gray-500/40">
                             <Play />
                         </div>
                     </div>
@@ -128,7 +128,7 @@ export default function About(){
                     </div>
                     <div className="flex items-center sm:gap-10 sm:mx-6 mx-2 gap-2">
                         <h1 className="hidden sm:flex">4:21</h1>
-                        <div className="flex items-center justify-center w-12 h-12 border rounded-full bg-white">
+                        <div className="flex items-center justify-center w-12 h-12 border rounded-full bg-white dark:bg-gray-500/40">
                             <Play />
                         </div>
                     </div>

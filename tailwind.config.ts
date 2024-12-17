@@ -57,7 +57,7 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
 		  boxShadow: {
-			'primary-glow': '0 0 204px 0 hsl(var(--primary) / 0.5)', // Updated syntax
+			'primary-glow': '0 0 204px 0 hsl(var(--primary) / 0.9)', // Updated syntax
 			'secondary-glow': '0 0 200px 0 hsl(var(--primary) /0.2)'
 		},
 		backgroundImage: {
