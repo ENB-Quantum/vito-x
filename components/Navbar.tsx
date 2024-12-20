@@ -7,7 +7,7 @@ import { ModeToggle } from "./ui/theme-switch";
 export default function Navbar() {
     return(
         
-        <div className="h-20 w-full sticky top-0 border-b bg-white dark:bg-black dark:border-b-black border-b-primary ">
+        <div className="h-20 w-full sticky top-0 border-b bg-white dark:bg-black dark:border-b-black border-b-primary z-50">
             <div className="sm:px-10 px-4 flex items-center justify-between h-20 ">
                 <Image
                     src="/LOGO-dark.png"

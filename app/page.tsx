@@ -5,20 +5,15 @@ import Extra from "@/components/extra";
 import Footer from "@/components/footer";
 import Video from "@/components/video";
 
-import Navbar from "@/components/Navbar";
-
 export default function Home() {
   return (
-    <div>
-      
-          <Navbar />
-          <Hero />
-          <Albums />
-          <About />
-          <Video />
-          <Extra />
-          <Footer />
-      
-    </div>
+    <>
+      <Hero />
+      <Albums />
+      <About />
+      <Video />
+      <Extra />
+      <Footer />
+    </>
   );
 }

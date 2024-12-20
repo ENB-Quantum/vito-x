@@ -3,6 +3,7 @@ import { AudioLines, MicVocal } from "lucide-react";
 import { Button } from "./ui/button";
 import MusicCard from "./music-card";
 import FileUpload from "./ui/file-upload";
+import { motion } from "framer-motion";
 
 export default function Hero() {
   const handleVoiceFile = (file: File) => {
@@ -18,7 +19,14 @@ export default function Hero() {
   return (
     <div className="w-full flex items-center justify-center my-40">
       <div className="flex items-center flex-col sm:py-20">
-        <h1 className="sm:text-6xl text-center font-bold text-4xl">Make your Music</h1>
+        <motion.h1
+          initial={{ opacity: 0, y: 20}}
+          animate={{ opacity: 1, y: 0}}
+          transition={{ duration: 1, ease: "easeInOut"}} 
+          className="sm:text-6xl text-center font-bold text-4xl"
+          >
+            Make your Music
+        </motion.h1>
         <h3 className="sm:text-2xl text-md text-gray-500/80 text-center sm:w-96 w-64 mx-auto sm:my-5 my-2">
           Create any song. Just give your voice or upload your lyrics.
         </h3>
