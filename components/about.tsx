@@ -7,7 +7,7 @@ export default function About(){
         <div className="sm:flex gap-2 items-start justify-evenly w-full sm:p-20 p-6">
             <div className="sm:w-96 sm:mr-10">
                 <h3 className="text-xs text-primary font-semibold">What we do</h3>
-                <h1 className="text-3xl font-semibold mt-4 mb-4 sm:w-64">Create your life's soundtrack</h1>
+                <h1 className="text-3xl font-semibold mt-4 mb-4 sm:w-64">Create your life’s soundtrack</h1>
                 <p className="sm:font-semibold text-gray-700 dark:text-white dark:font-normal mb-8 sm:text-lg text-md">Imagine creating personalized music for your life: 
                     a ballad for a romantic date, a banger for a night 
                     out with friends, a lo-fi track for meditation, or an 
