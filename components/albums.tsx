@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Albums(){
     return(
-        <div className="sm:flex items-center justify-center gap-16 sm:m-20 ">
+        <div className="sm:flex flex-wrap items-center justify-center gap-16 sm:m-20 ">
             <div className="flex items-center flex-col my-4">
                 <div className="w-44 h-44 rounded-lg ">
                     <Image 
