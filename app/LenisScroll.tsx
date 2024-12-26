@@ -7,7 +7,7 @@ export default function LenisScroll() {
     useEffect(() => {
         const lenis = new Lenis();
 
-        lenis.on('scroll', (np) => {
+        lenis.on('scroll', () => {
             
         });
 
