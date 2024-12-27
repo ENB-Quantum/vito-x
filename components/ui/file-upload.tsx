@@ -20,7 +20,7 @@ export default function FileUpload({ label, accept, icon, onFileSelect }: FileUp
   };
 
   return (
-    <label className="flex items-center gap-2 cursor-pointer">
+    (<label className="flex items-center gap-2 cursor-pointer">
       <div className="flex items-center">
         {icon}
         <span>{label}</span>
@@ -32,8 +32,8 @@ export default function FileUpload({ label, accept, icon, onFileSelect }: FileUp
         className="hidden"
       />
       {selectedFile && (
-        <p className="text-xs text-gray-500 mt-2">{selectedFile.name}</p> // Display the selected file name
+        (<p className="text-xs text-gray-500 mt-2">{selectedFile.name}</p>) // Display the selected file name
       )}
-    </label>
+    </label>)
   );
 }

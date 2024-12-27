@@ -1,6 +1,6 @@
 import { Play } from "lucide-react";
 import { Button } from "./ui/button";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 export default function About(){
     return(
