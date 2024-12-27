@@ -7,14 +7,14 @@ export default function MusicCard(){
             <div className="sm:flex ">
                     <Music 
                         icon = {<Play/>}
-                        image="https://i.scdn.co/image/ab67616d0000485117875a0610c23d8946454583"
+                        image="/Image/sample.jpg"
                         title="The Night we Met"
                         subTitle="Lord huron"
                         duration={"3:28"}
                     />
                     <Music 
                         icon = {<Play/>}
-                        image="https://i.scdn.co/image/ab67616d0000485117875a0610c23d8946454583"
+                        image="/Image/sample.jpg"
                         title="The Night we Met"
                         subTitle="Lord huron"
                         duration={"3:28"}
@@ -23,7 +23,7 @@ export default function MusicCard(){
                 <div className="sm:flex ">
                     <Music 
                         icon = {<Play/>}
-                        image="https://i.scdn.co/image/ab67616d0000485117875a0610c23d8946454583"
+                        image="/Image/sample.jpg"
                         title="The Night we Met"
                         subTitle="Lord huron"
                         duration={"3:28"}
@@ -31,14 +31,14 @@ export default function MusicCard(){
                     
                     <Music 
                         icon = {<Play/>}
-                        image="https://i.scdn.co/image/ab67616d0000485117875a0610c23d8946454583"
+                        image="/Image/sample.jpg"
                         title="The Night we Met"
                         subTitle="Lord huron"
                         duration={"3:28"}
                     />
                     <Music 
                         icon = {<Play/>}
-                        image="https://i.scdn.co/image/ab67616d0000485117875a0610c23d8946454583"
+                        image="/Image/sample.jpg"
                         title="The Night we Met"
                         subTitle="Lord huron"
                         duration={"3:28"}

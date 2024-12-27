@@ -15,7 +15,7 @@ export default function Music(props: Music): JSX.Element {
       <div className="flex items-center py-2 gap-2">
         {props.icon} {/* Render the icon component */}
         <div className="w-9 h-9">
-          <Image src={props.image} alt={`${props.title} cover`} className="rounded-sm" />
+          <Image src={props.image} alt={`${props.title} cover`} className="rounded-sm" width={36} height={36} />
         </div>
         <div>
           <h1 className="text-md">{props.title}</h1>
