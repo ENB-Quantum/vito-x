@@ -1,5 +1,5 @@
 
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./ui/theme-switch";
 

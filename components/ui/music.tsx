@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 export interface Music {
   icon: JSX.Element; // Changed from `string` to `JSX.Element` for icons
