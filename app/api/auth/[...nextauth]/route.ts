@@ -36,8 +36,6 @@ const handler = NextAuth({
                     throw new Error('Please enter an email and password');
                 }
                 
-                let client: MongoClient | null = null;
-                
                 try {
                     const usersCollection = await connectToDB();
                     const user = await usersCollection.findOne({ email: credentials.email });
@@ -61,7 +59,6 @@ const handler = NextAuth({
                     console.error('Authentication error:', error);
                     throw new Error('Authentication failed');
                 }
-                // Removed the finally block with client.close() since we're using a cached connection
             }
         })
     ],
