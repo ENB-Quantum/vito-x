@@ -7,8 +7,7 @@ import { motion } from "framer-motion";
 
 export default function Hero() {
   const handleVoiceFile = (file: File) => {
-    console.log("Voice File:", file);
-    // Add further logic to handle the voice file here
+    console.log("Voice Files:", file);
   };
 
   const handleLyricsFile = (file: File) => {

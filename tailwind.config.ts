@@ -49,6 +49,16 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
+  			},
+  			sidebar: {
+  				DEFAULT: 'hsl(var(--sidebar-background))',
+  				foreground: 'hsl(var(--sidebar-foreground))',
+  				primary: 'hsl(var(--sidebar-primary))',
+  				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+  				accent: 'hsl(var(--sidebar-accent))',
+  				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+  				border: 'hsl(var(--sidebar-border))',
+  				ring: 'hsl(var(--sidebar-ring))'
   			}
   		},
   		borderRadius: {
@@ -56,13 +66,13 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-		  boxShadow: {
-			'primary-glow': '0 0 204px 0 hsl(var(--primary) / 0.9)', // Updated syntax
-			'secondary-glow': '0 0 200px 0 hsl(var(--primary) /0.2)'
-		},
-		backgroundImage: {
-			'radial-gradient': 'radial-gradient(at center, #F7D6BF, #FFFFFF);'
-		}
+  		boxShadow: {
+  			'primary-glow': '0 0 204px 0 hsl(var(--primary) / 0.9)',
+  			'secondary-glow': '0 0 200px 0 hsl(var(--primary) /0.2)'
+  		},
+  		backgroundImage: {
+  			'radial-gradient': 'radial-gradient(at center, #F7D6BF, #FFFFFF);'
+  		}
   	}
   },
   plugins: [require("tailwindcss-animate")],

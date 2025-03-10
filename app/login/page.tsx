@@ -1,17 +1,21 @@
 'use client'
 
 import { useState, ChangeEvent, FormEvent } from "react"
+import { signIn, signOut, useSession } from "next-auth/react"
 import { toast, ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { useRouter } from 'next/navigation'
 
 interface FormData {
-    firstname: string
-    lastname: string
+    firstname?: string
+    lastname?: string
     email: string
     password: string
 }
 
 export default function Auth() {
+    const { data: session } = useSession()
+    const router = useRouter()
     const [isSignUp, setIsSignUp] = useState(true)
     const [formData, setFormData] = useState<FormData>({
         firstname: "",
@@ -25,7 +29,6 @@ export default function Auth() {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setFormData({ ...formData, [name]: value })
-        // Clear error when user starts typing
         if (error) setError(null)
     }
 
@@ -35,94 +38,76 @@ export default function Auth() {
         setIsLoading(true)
 
         try {
-            // Validate required fields
-            if (isSignUp && (!formData.firstname || !formData.lastname)) {
-                throw new Error('First name and last name are required')
-            }
-
-            if (!formData.email || !formData.password) {
-                throw new Error('Email and password are required')
-            }
-
-            // Basic email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-            if (!emailRegex.test(formData.email)) {
-                throw new Error('Please enter a valid email address')
-            }
-
-            // Password validation for signup
-            if (isSignUp && formData.password.length < 8) {
-                throw new Error('Password must be at least 8 characters long')
-            }
-
-            const response = await fetch('/api/auth', {  // Updated endpoint to match Next.js API route
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    type: isSignUp ? 'signup' : 'signin',
-                    ...formData
-                }),
-            })
-
-            // First check if response exists
-            if (!response) {
-                throw new Error('No response from server')
-            }
-
-            // Try to parse JSON response
-            const data = await response.json()
-
-            // Check for server errors
-            if (!response.ok) {
-                throw new Error(data.error || 'An error occurred')
-            }
-
-            // Handle successful response
-            console.log(data.message)
-
-            // Show success toast
             if (isSignUp) {
-                toast.success('Signed up successfully! You can now sign in.', {
-                    position: "top-center",
-                    autoClose: 3000,
-                    hideProgressBar: false,
+                // Handle sign up
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
                 })
-                setFormData({
-                    firstname: "",
-                    lastname: "",
-                    email: "",
-                    password: "",
-                })
-            } else {
-                toast.success('Signed in successfully!', {
-                    position: "top-center",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                })
-            }
 
-            // TODO: Add your success handling here (e.g., redirect, show success message)
-            
+                const data = await response.json()
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Sign up failed')
+                }
+
+                toast.success('Account created successfully! Please sign in.', {
+                    position: "top-center",
+                    autoClose: 3000,
+                })
+
+                // Switch to sign in mode after successful registration
+                setIsSignUp(false)
+            } else {
+                // Handle sign in with NextAuth
+                const result = await signIn('credentials', {
+                    redirect: false,
+                    email: formData.email,
+                    password: formData.password,
+                })
+
+                if (result?.error) {
+                    throw new Error(result.error)
+                }
+
+                if (result?.ok) {
+                    toast.success('Signed in successfully!', {
+                        position: "top-center",
+                        autoClose: 2000,
+                    })
+                    router.push('/dashboard') // Redirect to dashboard after successful login
+                }
+            }
         } catch (error) {
             console.error('Auth error:', error)
             setError(error instanceof Error ? error.message : 'An unexpected error occurred')
-
-            // Show error toast
             toast.error(error instanceof Error ? error.message : 'An unexpected error occurred', {
                 position: "top-center",
                 autoClose: 3000,
-                hideProgressBar: false,
             })
         } finally {
             setIsLoading(false)
         }
     }
 
+    // If user is already signed in, show a different view
+    if (session) {
+        return (
+            <div className="flex flex-col items-center justify-center h-[90vh] gap-4">
+                <h1 className="text-2xl">Signed in as {session.user?.email}</h1>
+                <button
+                    onClick={() => signOut()}
+                    className="bg-primary dark:bg-outline text-white py-2 px-4 rounded-md"
+                >
+                    Sign Out
+                </button>
+            </div>
+        )
+    }
+
     return (
         <>
-            {/* Toast Container for showing notifications */}
             <ToastContainer />
             <div className="flex items-center justify-center w-full h-[90vh]">
                 <div className="flex items-center justify-center sm:w-[50%]">
@@ -156,7 +141,7 @@ export default function Auth() {
                                         type="text" 
                                         name="firstname"
                                         placeholder="First name" 
-                                        className="py-3 px-2 rounded-md outline-none w-full"
+                                        className="py-3 px-2 rounded-md outline-none w-full text-black"
                                         value={formData.firstname}
                                         onChange={handleChange}
                                         required
@@ -167,7 +152,7 @@ export default function Auth() {
                                         type="text" 
                                         name="lastname"
                                         placeholder="Last name"  
-                                        className="py-3 px-2 rounded-md outline-none w-full"
+                                        className="py-3 px-2 rounded-md outline-none w-full text-black"
                                         value={formData.lastname}
                                         onChange={handleChange}
                                         required
@@ -180,7 +165,7 @@ export default function Auth() {
                                 type="email" 
                                 name="email"
                                 placeholder="Email" 
-                                className="border-b-2 py-3 rounded-sm px-2 outline-none"
+                                className="border-b-2 py-3 rounded-sm px-2 outline-none text-black"
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
@@ -189,7 +174,7 @@ export default function Auth() {
                                 type="password" 
                                 name="password"
                                 placeholder="Password" 
-                                className="border-b-2 py-3 rounded-md px-2 outline-none"
+                                className="border-b-2 py-3 rounded-md px-2 outline-none text-black"
                                 value={formData.password}
                                 onChange={handleChange}
                                 required
