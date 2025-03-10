@@ -3,20 +3,24 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { MongoClient } from "mongodb";
 import bcrypt from "bcryptjs";
 
-const uri = process.env.MONGODB_URI;
-if (!uri) {
+// Fix the TypeScript error with type assertion
+const uri = process.env.MONGODB_URI as string;
+
+if (!uri || uri === "") {
     throw new Error("MongoDB connection string is required");
 }
 
-const client = new MongoClient(uri);
-const dbName = "vito-x";
-const collectionName = "users";
+// Create a cached connection variable
+let cachedClient: MongoClient | null = null;
 
 async function connectToDB() {
-    if (!client.connect()) {
-        await client.connect();
+    if (cachedClient) {
+        return cachedClient.db("vito-x").collection("users");
     }
-    return client.db(dbName).collection(collectionName);
+    
+    cachedClient = new MongoClient(uri);
+    await cachedClient.connect();
+    return cachedClient.db("vito-x").collection("users");
 }
 
 const handler = NextAuth({
@@ -31,16 +35,23 @@ const handler = NextAuth({
                 if (!credentials?.email || !credentials?.password) {
                     throw new Error('Please enter an email and password');
                 }
+                
+                let client: MongoClient | null = null;
+                
                 try {
                     const usersCollection = await connectToDB();
                     const user = await usersCollection.findOne({ email: credentials.email });
+                    
                     if (!user) {
                         throw new Error('No user found with this email');
                     }
+                    
                     const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+                    
                     if (!isPasswordValid) {
                         throw new Error('Invalid password');
                     }
+                    
                     return {
                         id: user._id.toString(),
                         email: user.email,
@@ -49,10 +60,8 @@ const handler = NextAuth({
                 } catch (error) {
                     console.error('Authentication error:', error);
                     throw new Error('Authentication failed');
-                } finally {
-                    // Close the connection after auth
-                    await client.close();
                 }
+                // Removed the finally block with client.close() since we're using a cached connection
             }
         })
     ],
@@ -75,7 +84,6 @@ const handler = NextAuth({
         },
         async session({ session, token }) {
             if (session.user) {
-                
                 session.user.id = token.id;
                 session.user.name = token.name;
             }
