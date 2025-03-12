@@ -1,5 +1,6 @@
 import { Instagram, Youtube } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer(){
     return(
@@ -7,14 +8,14 @@ export default function Footer(){
             <div className="flex items-center justify-between sm:px-10 px-4 h-20">
                 <div className="sm:px-10 ">
                     <Image
-                        src="/LOGO-dark.png"
+                        src="/Image/LOGO-dark.png"
                         alt="LOGO"
                         width={100}
                         height={30}
                         className="object-contain hidden dark:block"
                     />
                     <Image
-                        src="/LOGO-light.png"
+                        src="/Image/LOGO-light.png"
                         alt="LOGO"
                         width={100}
                         height={30}
@@ -22,8 +23,11 @@ export default function Footer(){
                     />
                 </div>
                 <div className="flex gap-4 sm:px-10">
-                    <Instagram />
-                    <Youtube />
+                    <Link href={'https://www.instagram.com/vito_x666'}><Instagram />
+                    </Link>
+                    <Link href={'https://www.youtube.com/@vitoX666'}><Youtube />
+                    </Link>
+                    
                 </div>
             </div>
         </div>

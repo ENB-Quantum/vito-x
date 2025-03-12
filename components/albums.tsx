@@ -1,9 +1,10 @@
 "use client"
 import Image from "next/image"
 import type React from "react"
-
-import { useState, useRef, useEffect, type JSX } from "react"
-import { Play, Pause, Volume2, VolumeX, X } from "lucide-react"
+import { useState, useRef,   JSX } from "react"
+import { Play, Pause, X } from "lucide-react"
+import AudioPlayer from 'react-h5-audio-player'
+import 'react-h5-audio-player/lib/styles.css'
 
 interface Album {
   id: number
@@ -18,14 +19,9 @@ export default function Albums(): JSX.Element {
   const [hoveredAlbum, setHoveredAlbum] = useState<number | null>(null)
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const [currentAlbum, setCurrentAlbum] = useState<number | null>(null)
-  const [currentTime, setCurrentTime] = useState<number>(0)
-  const [duration, setDuration] = useState<number>(0)
-  const [volume, setVolume] = useState<number>(0.7)
-  const [isMuted, setIsMuted] = useState<boolean>(false)
   const [showPlayer, setShowPlayer] = useState<boolean>(true)
 
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const progressBarRef = useRef<HTMLDivElement | null>(null)
+  const playerRef = useRef<any>(null)
 
   const albums: Album[] = [
     {
@@ -34,7 +30,7 @@ export default function Albums(): JSX.Element {
       artist: "DannoOppo",
       genre: "Folk",
       image: "/Image/image-1.png",
-      audioSrc: "/audio/track1.mp3", // Replace with your actual audio file path
+      audioSrc: "/songs/song-1.mp3", 
     },
     {
       id: 2,
@@ -42,7 +38,7 @@ export default function Albums(): JSX.Element {
       artist: "MrTomMusic",
       genre: "Electronic",
       image: "/Image/image-2.png",
-      audioSrc: "/audio/track2.mp3",
+      audioSrc: "/songs/song-1.mp3",
     },
     {
       id: 3,
@@ -50,7 +46,7 @@ export default function Albums(): JSX.Element {
       artist: "DannoOppo",
       genre: "Hip Hop",
       image: "/Image/image-3.png",
-      audioSrc: "/audio/track3.mp3",
+      audioSrc: "/songs/song-1.mp3",
     },
     {
       id: 4,
@@ -58,7 +54,7 @@ export default function Albums(): JSX.Element {
       artist: "Jakemarsh",
       genre: "Rock",
       image: "/Image/image-4.png",
-      audioSrc: "/audio/track4.mp3",
+      audioSrc: "/songs/song-1.mp3",
     },
     {
       id: 5,
@@ -66,93 +62,28 @@ export default function Albums(): JSX.Element {
       artist: "DannoOppo",
       genre: "Folk",
       image: "/Image/image-5.png",
-      audioSrc: "/audio/track5.mp3",
+      audioSrc: "/songs/song-1.mp3",
     },
   ]
 
-  useEffect(() => {
-    // Initialize audio element
-    if (!audioRef.current) {
-      const audio = new Audio()
-      audio.addEventListener("timeupdate", updateProgress)
-      audio.addEventListener("loadedmetadata", () => {
-        setDuration(audio.duration)
-      })
-      audio.addEventListener("ended", () => {
-        setIsPlaying(false)
-      })
-      audioRef.current = audio
-    }
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause()
-        audioRef.current.removeEventListener("timeupdate", updateProgress)
-        audioRef.current.removeEventListener("loadedmetadata", () => {})
-        audioRef.current.removeEventListener("ended", () => {})
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    // Set volume when it changes or mute state changes
-    if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume
-    }
-  }, [volume, isMuted])
-
-  const updateProgress = (): void => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime)
-    }
-  }
-
   const handlePlay = (albumId: number): void => {
     const album = albums.find((a) => a.id === albumId)
-
     if (!album) return
 
     if (currentAlbum === albumId && isPlaying) {
       // Pause current track
-      audioRef.current?.pause()
+      playerRef.current?.audio.current?.pause()
       setIsPlaying(false)
     } else if (currentAlbum === albumId && !isPlaying) {
       // Resume current track
-      audioRef.current?.play()
+      playerRef.current?.audio.current?.play()
       setIsPlaying(true)
     } else {
       // Play a new track
-      if (audioRef.current) {
-        audioRef.current.src = album.audioSrc
-        audioRef.current.load()
-        audioRef.current.play().catch((e) => console.error("Error playing audio:", e))
-        setCurrentAlbum(albumId)
-        setIsPlaying(true)
-        setShowPlayer(true) // Show the player when a new track is played
-      }
+      setCurrentAlbum(albumId)
+      setIsPlaying(true)
+      setShowPlayer(true)
     }
-  }
-
-  const formatTime = (seconds: number): string => {
-    const mins = Math.floor(seconds / 60)
-    const secs = Math.floor(seconds % 60)
-    return `${mins}:${secs < 10 ? "0" + secs : secs}`
-  }
-
-  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>): void => {
-    if (!progressBarRef.current || !audioRef.current) return
-
-    const progressBar = progressBarRef.current
-    const rect = progressBar.getBoundingClientRect()
-    const percent = (e.clientX - rect.left) / rect.width
-
-    if (audioRef.current) {
-      audioRef.current.currentTime = percent * duration
-    }
-  }
-
-  const toggleMute = (): void => {
-    setIsMuted(!isMuted)
   }
 
   return (
@@ -198,7 +129,7 @@ export default function Albums(): JSX.Element {
         ))}
       </div>
 
-      {/* Audio Player Controls */}
+      {/* Audio Player Controls using react-h5-audio-player */}
       {currentAlbum !== null && showPlayer && (
         <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 z-10">
           <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center gap-4">
@@ -217,53 +148,51 @@ export default function Albums(): JSX.Element {
               </div>
             </div>
 
-            <div className="flex-grow flex flex-col mx-4 w-full">
-              <div className="flex items-center justify-center gap-4 mb-2">
-                <button
-                  className="bg-white text-black rounded-full p-3 hover:bg-gray-200"
-                  onClick={() => handlePlay(currentAlbum)}
-                >
-                  {isPlaying ? <Pause size={20} /> : <Play size={20} className="ml-0.5" />}
-                </button>
-              </div>
-
-              <div className="flex items-center gap-2 w-full">
-                <span className="text-xs">{formatTime(currentTime)}</span>
-                <div
-                  ref={progressBarRef}
-                  className="flex-grow h-2 bg-gray-700 rounded-full cursor-pointer"
-                  onClick={handleProgressClick}
-                >
-                  <div
-                    className="h-full bg-white rounded-full"
-                    style={{ width: `${(currentTime / duration) * 100}%` }}
-                  ></div>
-                </div>
-                <span className="text-xs">{formatTime(duration)}</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button className="text-white hover:text-gray-300" onClick={toggleMute}>
-                {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-              </button>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={volume}
-                onChange={(e) => setVolume(Number.parseFloat(e.target.value))}
-                className="w-24 cursor-pointer"
+            <div className="flex-grow mx-4 w-full">
+              <AudioPlayer
+                ref={playerRef}
+                src={albums.find((a) => a.id === currentAlbum)?.audioSrc}
+                autoPlay
+                showJumpControls={true}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onEnded={() => setIsPlaying(false)}
+                layout="stacked"
+                showSkipControls={false}
+                className="bg-transparent border-none"
+                style={{
+                  background: 'transparent',
+                  boxShadow: 'none',
+                }}
+                customControlsSection={
+                  [
+                    <div className="flex items-center justify-center" key="controls">
+                      <div className="rhap_main-controls">{/* This will render default controls */}</div>
+                      <div className="rhap_volume-controls">{/* This will render default volume controls */}</div>
+                    </div>
+                  ]
+                }
+                customProgressBarSection={
+                  [
+                    <div className="flex items-center w-full gap-2" key="progress">
+                      <div className="rhap_current-time rhap_time text-xs text-white" />
+                      <div className="rhap_progress-container flex-grow" />
+                      <div className="rhap_total-time rhap_time text-xs text-white" />
+                    </div>
+                  ]
+                }
               />
-              <button className="text-white hover:text-gray-300 ml-4" onClick={() => setShowPlayer(false)}>
-                <X size={20} />
-              </button>
             </div>
+
+            <button 
+              className="text-white hover:text-gray-300 ml-4" 
+              onClick={() => setShowPlayer(false)}
+            >
+              <X size={20} />
+            </button>
           </div>
         </div>
       )}
     </div>
   )
 }
-

@@ -4,6 +4,8 @@ import { useState, useRef } from "react"
 import { Play, Pause } from "lucide-react"
 import { Button } from "./ui/button"
 import Image from "next/image"
+import AudioPlayer from 'react-h5-audio-player'
+import 'react-h5-audio-player/lib/styles.css'
 
 interface Track {
   id: number
@@ -21,7 +23,7 @@ const tracks: Track[] = [
     genre: "Dream House",
     duration: "4:21",
     image: "/Image/sub-img-1.png",
-    audio: "/audio/track1.mp3",
+    audio: "/songs/song-1.mp3",
   },
   {
     id: 2,
@@ -29,7 +31,7 @@ const tracks: Track[] = [
     genre: "Nu Jazz",
     duration: "4:21",
     image: "/Image/sub-img-2.png",
-    audio: "/audio/track2.mp3",
+    audio: "/songs/song-1.mp3",
   },
   {
     id: 3,
@@ -37,7 +39,7 @@ const tracks: Track[] = [
     genre: "Orchestral",
     duration: "4:21",
     image: "/Image/sub-img-3.png",
-    audio: "/audio/track3.mp3",
+    audio: "/songs/song-1.mp3",
   },
   {
     id: 4,
@@ -45,7 +47,7 @@ const tracks: Track[] = [
     genre: "French House",
     duration: "4:21",
     image: "/Image/sub-img-4.png",
-    audio: "/audio/track4.mp3",
+    audio: "/songs/song-1.mp3",
   },
   {
     id: 5,
@@ -53,29 +55,32 @@ const tracks: Track[] = [
     genre: "Synthpop",
     duration: "4:21",
     image: "/Image/sub-img-5.png",
-    audio: "/audio/track5.mp3",
+    audio: "/songs/song-1.mp3",
   },
 ]
 
 export default function About() {
   const [currentTrack, setCurrentTrack] = useState<number | null>(null)
-  const audioRef = useRef<HTMLAudioElement>(null)
+  const playerRef = useRef<any>(null)
 
-  const togglePlay = (trackId: number) => {
+  const handlePlayClick = (trackId: number) => {
     if (currentTrack === trackId) {
-      if (audioRef.current?.paused) {
-        audioRef.current.play()
-      } else {
-        audioRef.current?.pause()
+      // Toggle play/pause for current track
+      if (playerRef.current) {
+        if (playerRef.current.audio.current.paused) {
+          playerRef.current.audio.current.play();
+        } else {
+          playerRef.current.audio.current.pause();
+        }
       }
     } else {
-      setCurrentTrack(trackId)
-      if (audioRef.current) {
-        audioRef.current.src = tracks.find((track) => track.id === trackId)?.audio || ""
-        audioRef.current.play()
-      }
+      // Change track
+      setCurrentTrack(trackId);
     }
   }
+
+  // Get current track data
+  const activeTrack = currentTrack ? tracks.find(track => track.id === currentTrack) : null;
 
   return (
     <div className="sm:flex gap-2 items-start justify-evenly w-full sm:p-20 p-6">
@@ -91,11 +96,11 @@ export default function About() {
           Create your first song
         </Button>
       </div>
-      <div className="my-10 sm:my-0">
+      <div className="my-10 sm:my-0 flex flex-col w-full max-w-lg">
         {tracks.map((track) => (
           <div
             key={track.id}
-            className="flex justify-between bg-transparent gap-3 border rounded-md p-2 my-2 shadow-secondary-glow"
+            className={`flex justify-between bg-transparent gap-3 border rounded-md p-2 my-2 ${currentTrack === track.id ? 'shadow-primary-glow border-primary' : 'shadow-secondary-glow'}`}
           >
             <div className="flex gap-3 items-center">
               <div className="sm:w-[60px] w-16">
@@ -115,17 +120,41 @@ export default function About() {
             <div className="flex items-center sm:gap-10 sm:mx-6 mx-2 gap-2">
               <h1 className="hidden md:flex">{track.duration}</h1>
               <div
-                className="flex items-center justify-center w-12 h-12 border rounded-full bg-gray-500/40 cursor-pointer"
-                onClick={() => togglePlay(track.id)}
+                className="flex items-center justify-center w-12 h-12 border rounded-full bg-gray-500/40 cursor-pointer hover:bg-gray-500/60"
+                onClick={() => handlePlayClick(track.id)}
               >
-                {currentTrack === track.id && !audioRef.current?.paused ? <Pause /> : <Play />}
+                {currentTrack === track.id && playerRef.current && !playerRef.current.audio.current.paused ? <Pause /> : <Play />}
               </div>
             </div>
           </div>
         ))}
+        
+        {activeTrack && (
+          <div className="mt-6 border rounded-md p-4 shadow-primary-glow">
+            <div className="flex items-center gap-4 mb-3">
+              <Image
+                src={activeTrack.image || "/placeholder.svg"}
+                alt={`${activeTrack.title} cover`}
+                width={50}
+                height={50}
+                className="rounded-sm"
+              />
+              <div>
+                <h2 className="font-semibold">{activeTrack.title}</h2>
+                <p className="text-sm">{activeTrack.genre}</p>
+              </div>
+            </div>
+            <AudioPlayer
+              ref={playerRef}
+              src={activeTrack.audio}
+              autoPlay
+              className="player-wrapper"
+              showJumpControls={true}
+              layout="stacked-reverse"
+            />
+          </div>
+        )}
       </div>
-      <audio ref={audioRef} />
     </div>
   )
 }
-

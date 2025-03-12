@@ -19,7 +19,7 @@ export default function MusicCard() {
           title="The Night we Met"
           subTitle="Lord huron"
           duration="3:28"
-          audioSrc="/audio/the-night-we-met.mp3" // Added audio source
+          audioSrc="/songs/song-1.mp3" // Added audio source
         />
       </div>
       <div className="sm:flex">
@@ -29,7 +29,7 @@ export default function MusicCard() {
           title="The Night we Met"
           subTitle="Lord huron"
           duration="3:28"
-          audioSrc="/audio/the-night-we-met.mp3" // Added audio source
+          audioSrc="/songs/song-1.mp3" // Added audio source
         />
         <AudioPlayer
           icon={<Play />}
@@ -37,7 +37,7 @@ export default function MusicCard() {
           title="The Night we Met"
           subTitle="Lord huron"
           duration="3:28"
-          audioSrc="/audio/the-night-we-met.mp3" // Added audio source
+          audioSrc="/songs/song-1.mp3" // Added audio source
         />
         <AudioPlayer
           icon={<Play />}
@@ -45,7 +45,7 @@ export default function MusicCard() {
           title="The Night we Met"
           subTitle="Lord huron"
           duration="3:28"
-          audioSrc="/audio/the-night-we-met.mp3" // Added audio source
+          audioSrc="/songs/song-1.mp3" // Added audio source
         />
       </div>
     </div>
