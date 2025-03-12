@@ -21,7 +21,7 @@ export default function Albums(): JSX.Element {
   const [currentAlbum, setCurrentAlbum] = useState<number | null>(null)
   const [showPlayer, setShowPlayer] = useState<boolean>(true)
 
-  const playerRef = useRef<any>(null)
+  const playerRef = useRef<AudioPlayer>(null)
 
   const albums: Album[] = [
     {

@@ -4,8 +4,8 @@ import { useState, useRef } from "react"
 import { Play, Pause } from "lucide-react"
 import { Button } from "./ui/button"
 import Image from "next/image"
-import AudioPlayer from 'react-h5-audio-player'
-import 'react-h5-audio-player/lib/styles.css'
+import AudioPlayer from "react-h5-audio-player"
+import "react-h5-audio-player/lib/styles.css"
 
 interface Track {
   id: number
@@ -61,26 +61,26 @@ const tracks: Track[] = [
 
 export default function About() {
   const [currentTrack, setCurrentTrack] = useState<number | null>(null)
-  const playerRef = useRef<any>(null)
+  const playerRef = useRef<AudioPlayer | null>(null)
 
   const handlePlayClick = (trackId: number) => {
     if (currentTrack === trackId) {
-      // Toggle play/pause for current track
       if (playerRef.current) {
-        if (playerRef.current.audio.current.paused) {
-          playerRef.current.audio.current.play();
-        } else {
-          playerRef.current.audio.current.pause();
+        const audioElement = playerRef.current.audio.current;
+        if (audioElement) {
+          if (audioElement.paused) {
+            audioElement.play()
+          } else {
+            audioElement.pause()
+          }
         }
       }
     } else {
-      // Change track
-      setCurrentTrack(trackId);
+      setCurrentTrack(trackId)
     }
   }
 
-  // Get current track data
-  const activeTrack = currentTrack ? tracks.find(track => track.id === currentTrack) : null;
+  const activeTrack = currentTrack ? tracks.find((track) => track.id === currentTrack) : null
 
   return (
     <div className="sm:flex gap-2 items-start justify-evenly w-full sm:p-20 p-6">
@@ -100,7 +100,7 @@ export default function About() {
         {tracks.map((track) => (
           <div
             key={track.id}
-            className={`flex justify-between bg-transparent gap-3 border rounded-md p-2 my-2 ${currentTrack === track.id ? 'shadow-primary-glow border-primary' : 'shadow-secondary-glow'}`}
+            className={`flex justify-between bg-transparent gap-3 border rounded-md p-2 my-2 ${currentTrack === track.id ? "shadow-primary-glow border-primary" : "shadow-secondary-glow"}`}
           >
             <div className="flex gap-3 items-center">
               <div className="sm:w-[60px] w-16">
@@ -123,12 +123,16 @@ export default function About() {
                 className="flex items-center justify-center w-12 h-12 border rounded-full bg-gray-500/40 cursor-pointer hover:bg-gray-500/60"
                 onClick={() => handlePlayClick(track.id)}
               >
-                {currentTrack === track.id && playerRef.current && !playerRef.current.audio.current.paused ? <Pause /> : <Play />}
+                {currentTrack === track.id && playerRef.current?.audio.current && !playerRef.current.audio.current.paused ? (
+                  <Pause />
+                ) : (
+                  <Play />
+                )}
               </div>
             </div>
           </div>
         ))}
-        
+
         {activeTrack && (
           <div className="mt-6 border rounded-md p-4 shadow-primary-glow">
             <div className="flex items-center gap-4 mb-3">
