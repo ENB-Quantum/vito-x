@@ -1,7 +1,7 @@
 // app/api/upload/lyrics/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth'
 import { v4 as uuidv4 } from 'uuid';
 
 // Initialize Supabase client
