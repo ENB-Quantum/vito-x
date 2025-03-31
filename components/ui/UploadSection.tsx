@@ -48,13 +48,21 @@ export function UploadSection({
         body: formData
       });
 
-      const result = await response.json();
-
+      // First check if response is ok
       if (!response.ok) {
-        throw new Error(result.error || 'Upload failed');
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Server error: ${response.status}`);
+        } else {
+          throw new Error(`Server error: ${response.status}`);
+        }
       }
 
+      // Only try to parse JSON if response was ok
+      const result = await response.json();
       setUploadSuccess(true);
+      console.log('Upload successful:', result);
     } catch (error) {
       console.error(`Upload error:`, error);
       setUploadError(error instanceof Error ? error.message : 'Failed to upload file');
