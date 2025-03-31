@@ -87,7 +87,7 @@ const handler = NextAuth({
             return session;
         }
     },
-    debug: process.env.NODE_ENV === 'development', // Enable debug in development
+    debug: process.env.NODE_ENV === 'production', // Enable debug in development
     secret: process.env.NEXTAUTH_SECRET,
 });
 
