@@ -36,7 +36,7 @@ const parseForm = async (req: NextRequest): Promise<{ fields: formidable.Fields;
       headers: Object.fromEntries(req.headers.entries()),
       method: req.method,
       url: req.url,
-      on: (event: string, callback: any) => {
+      on: (event: string) => {
         if (event === 'data' || event === 'end') {
           // Handle streaming data
         }
