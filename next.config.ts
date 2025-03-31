@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: [], // If you need this option
+  /* config options here */
 };
 
 export default nextConfig;
