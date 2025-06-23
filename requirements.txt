@@ -1,0 +1,17 @@
+Flask>=2.0
+Flask-SQLAlchemy>=2.5
+Flask-Login>=0.5
+python-dotenv>=0.19 # For managing environment variables, optional but good practice
+Werkzeug>=2.0 # Often a dependency of Flask, but good to specify
+Jinja2>=3.0 # Template engine for Flask
+
+# For testing (optional, but good for running tests)
+# pytest
+# pytest-flask
+
+# For database migrations (if we add Flask-Migrate)
+# Flask-Migrate>=3.0
+# alembic
+
+# Note: Versions are examples, adjust based on specific needs and compatibility.
+# Use `pip freeze > requirements.txt` to capture exact versions from an active virtual environment.

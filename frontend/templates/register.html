@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}Register - Task Management App{% endblock %}
+
+{% block content %}
+<div class="auth-form">
+    <h2>Register</h2>
+    <p>Register as an employee. Your account will require admin approval.</p>
+    <form method="POST" action="{{ url_for('auth.register') }}">
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+        </div>
+
+        {# This part is for initial admin setup.
+           Normally, users should not be able to select if they are admin.
+           Logic in auth.py handles making the first user an admin.
+           This could be hidden or removed for general registration.
+        #}
+        {# The logic to make the first user an admin is in `backend/auth.py`.
+           A production app might use a CLI command to create the first admin.
+           For simplicity, this checkbox is present but its effect is controlled server-side.
+        #}
+        <div>
+            <input type="checkbox" id="is_admin" name="is_admin" value="true">
+            <label for="is_admin" style="display: inline;">Register as Administrator (Only effective if no admin exists)</label>
+            <p style="font-size: 0.8em; color: #666;">The system will automatically make the first registered user an admin. This checkbox can also be used if no admin currently exists.</p>
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+    <p class="mt-2">
+        Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a>
+    </p>
+</div>
+{% endblock %}

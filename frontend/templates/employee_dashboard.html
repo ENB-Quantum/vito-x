@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}My Tasks - {{ super() }}{% endblock %}
+
+{% block content %}
+<h2>My Tasks</h2>
+<p>Welcome, {{ current_user.username }}!</p>
+
+{% if not current_user.is_approved %}
+    <div class="flash-warning">
+        Your account is currently pending approval from an administrator. You will not be able to see or manage tasks until approved.
+    </div>
+{% elif tasks %}
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Assigned Date</th>
+                <th>Completion Deadline</th>
+                <th>Status</th>
+                <th>Update Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description|truncate(100, True) if task.description else 'N/A' }}</td>
+                <td>{{ task.assignment_date.strftime('%Y-%m-%d') if task.assignment_date else 'N/A' }}</td>
+                <td>{{ task.completion_date.strftime('%Y-%m-%d') if task.completion_date else 'N/A' }}</td>
+                <td><span class="status-{{ task.status|lower|replace(' ', '-') }}">{{ task.status }}</span></td>
+                <td>
+                    {% if task.status != 'Completed' %}
+                    <form method="POST" action="{{ url_for('main.update_task_status', task_id=task.id) }}">
+                        <select name="status" onchange="this.form.submit()">
+                            <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                            <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
+                        </select>
+                        {# <button type="submit" class="btn btn-sm">Update</button> #}
+                    </form>
+                    {% else %}
+                        Completed
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You have no tasks assigned to you, or your account is pending approval.</p>
+{% endif %}
+{% endblock %}
+
+{% block scripts_extra %}
+<style>
+    .status-pending { color: orange; font-weight: bold; }
+    .status-in-progress { color: blue; font-weight: bold; } /* Fixed class name */
+    .status-completed { color: green; font-weight: bold; }
+</style>
+{% endblock %}

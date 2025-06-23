@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Web Application: Admin & Employee Task Management
 
-## Getting Started
+This project is a web application designed for administrators to manage employees and assign tasks, and for employees to view and manage their assigned tasks.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+*   **Admin Role:**
+    *   Secure login.
+    *   Approve/reject employee registrations.
+    *   Assign tasks to employees with start and completion dates.
+    *   Monitor task progress.
+*   **Employee Role:**
+    *   Secure registration (requires admin approval).
+    *   Login.
+    *   View assigned tasks and deadlines.
+    *   Update task status.
+
+## Technical Stack (Planned)
+
+*   **Backend:** Python (Flask)
+*   **Frontend:** HTML, CSS, JavaScript (using Flask's Jinja2 templating)
+*   **Database:** SQLite (for development), PostgreSQL (for production - conceptual)
+*   **Version Control:** Git
+
+## Project Structure
+
+```
+/
+├── backend/
+│   ├── __init__.py          # Makes 'backend' a Python package
+│   ├── app.py               # Main Flask application setup
+│   ├── models.py            # Database models (SQLAlchemy)
+│   ├── routes.py            # Application routes/views
+│   ├── auth.py              # Authentication logic
+│   ├── static/              # Backend static files (if any, rarely used with separate frontend)
+│   └── templates/           # Backend templates (e.g. error pages, email templates)
+├── frontend/
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css    # Main CSS styles
+│   │   └── js/
+│   │       └── script.js    # Main JS scripts (if needed)
+│   └── templates/
+│       ├── layout.html          # Base HTML layout
+│       ├── login.html           # Login page
+│       ├── register.html        # Employee registration page
+│       ├── admin_dashboard.html # Admin dashboard (task monitoring)
+│       ├── employee_dashboard.html# Employee dashboard (view tasks)
+│       ├── admin_manage_users.html # Admin page to manage users (approve/reject)
+│       └── admin_assign_task.html # Admin page to assign tasks
+├── tests/                   # Unit and integration tests
+│   ├── __init__.py          # Makes 'tests' a Python package
+│   ├── test_auth.py
+│   └── test_tasks.py
+├── instance/                # Instance folder for SQLite DB, config files (Flask specific)
+├── requirements.txt         # Python dependencies
+├── database_schema.md       # Description of database tables
+└── README.md                # This file
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup and Run (Conceptual)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository_url>
+    cd <repository_name>
+    ```
+2.  **Create and activate a virtual environment:**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    ```
+3.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  **Initialize the database (Flask-Migrate or custom script):**
+    ```bash
+    # export FLASK_APP=run.py (or your entry point)
+    # flask db init
+    # flask db migrate -m "Initial migration"
+    # flask db upgrade
+    ```
+5.  **Create an initial admin user (if applicable, via a CLI command or script).**
+6.  **Run the application:**
+    ```bash
+    # flask run
+    ```
+This file will be overwritten.

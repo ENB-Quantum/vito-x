@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}Admin Dashboard - {{ super() }}{% endblock %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+<p>Welcome, {{ current_user.username }}!</p>
+
+<div class="dashboard-grid">
+    <div class="card">
+        <h3>Task Overview</h3>
+        <p>Total Tasks: {{ tasks|length }}</p>
+        <p>Pending Tasks: {{ tasks|selectattr('status', 'equalto', 'Pending')|list|length }}</p>
+        <p>In Progress Tasks: {{ tasks|selectattr('status', 'equalto', 'In Progress')|list|length }}</p>
+        <p>Completed Tasks: {{ tasks|selectattr('status', 'equalto', 'Completed')|list|length }}</p>
+        <a href="{{ url_for('main.admin_assign_task') }}" class="btn">Assign New Task</a>
+    </div>
+
+    <div class="card">
+        <h3>Employee Management</h3>
+        <p>Total Employees: {{ employees|length }}</p>
+        {# Logic for pending approvals will be on the Manage Users page #}
+        <a href="{{ url_for('main.admin_manage_users') }}" class="btn">Manage Users</a>
+    </div>
+</div>
+
+<h3 class="mt-2">All Tasks</h3>
+{% if tasks %}
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Assigned To</th>
+                <th>Assignment Date</th>
+                <th>Completion Deadline</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.assignee.username if task.assignee else 'N/A' }}</td>
+                <td>{{ task.assignment_date.strftime('%Y-%m-%d') if task.assignment_date else 'N/A' }}</td>
+                <td>{{ task.completion_date.strftime('%Y-%m-%d') if task.completion_date else 'N/A' }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('main.update_task_status', task_id=task.id) }}" style="display: inline;">
+                        <select name="status" onchange="this.form.submit()">
+                            <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                            <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
+                        </select>
+                    </form>
+                </td>
+                <td>
+                    {# <a href="{{ url_for('main.admin_edit_task', task_id=task.id) }}" class="btn btn-secondary btn-sm">Edit</a> #}
+                    <form method="POST" action="{{ url_for('main.delete_task', task_id=task.id) }}" style="display: inline;" class="delete-form">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No tasks found.</p>
+{% endif %}
+
+{% endblock %}

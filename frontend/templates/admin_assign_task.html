@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}Assign Task - {{ super() }}{% endblock %}
+
+{% block content %}
+<h2>Assign New Task</h2>
+
+<form method="POST" action="{{ url_for('main.admin_assign_task') }}">
+    <div>
+        <label for="title">Task Title</label>
+        <input type="text" id="title" name="title" required>
+    </div>
+    <div>
+        <label for="description">Description (Optional)</label>
+        <textarea id="description" name="description"></textarea>
+    </div>
+    <div>
+        <label for="assigned_to_id">Assign To Employee</label>
+        <select id="assigned_to_id" name="assigned_to_id" required>
+            <option value="">Select Employee...</option>
+            {% for emp in employees %}
+                {% if emp.is_approved %} {# Should already be filtered by route, but good check #}
+                <option value="{{ emp.id }}">{{ emp.username }} ({{ emp.email }})</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="completion_date">Completion Deadline</label>
+        <input type="date" id="completion_date" name="completion_date" required>
+        {# For datetime-local input type, use: <input type="datetime-local" id="completion_date" name="completion_date" required>
+           And adjust strptime format in backend routes.py accordingly.
+        #}
+    </div>
+    <button type="submit" class="btn">Assign Task</button>
+</form>
+
+<p class="mt-2"><a href="{{ url_for('main.admin_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a></p>
+
+{% endblock %}

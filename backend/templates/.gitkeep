@@ -1,0 +1,2 @@
+# This file ensures the directory is tracked by Git, even if empty.
+# Backend templates might be used for things like error pages (404, 500) or email templates.

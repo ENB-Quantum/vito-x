@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}Manage Users - {{ super() }}{% endblock %}
+
+{% block content %}
+<h2>Manage Users</h2>
+
+<div class="card">
+    <h3>Pending Approval ({{ pending_users|length }})</h3>
+    {% if pending_users %}
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Registered On</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in pending_users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.registered_on.strftime('%Y-%m-%d %H:%M') if user.registered_on else 'N/A' }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('main.approve_user', user_id=user.id) }}" style="display: inline;">
+                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                    </form>
+                    <form method="POST" action="{{ url_for('main.reject_user', user_id=user.id) }}" style="display: inline;" class="delete-form">
+                        <button type="submit" class="btn btn-danger btn-sm">Reject/Deny</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No users pending approval.</p>
+    {% endif %}
+</div>
+
+<div class="card mt-2">
+    <h3>Approved Employees ({{ approved_users|length }})</h3>
+    {% if approved_users %}
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Registered On</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in approved_users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.registered_on.strftime('%Y-%m-%d %H:%M') if user.registered_on else 'N/A' }}</td>
+                <td><span class="text-success">Approved</span></td>
+                <td>
+                    <form method="POST" action="{{ url_for('main.reject_user', user_id=user.id) }}" style="display: inline;" class="delete-form">
+                        <button type="submit" class="btn btn-warning btn-sm">Revoke Approval</button>
+                    </form>
+                    {# Add other actions like 'View Tasks', 'Delete User' (with caution) #}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No approved employees found.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
